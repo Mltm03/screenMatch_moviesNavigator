@@ -29,9 +29,17 @@ public class Serie {
     private String actores;
     private String sinopsis;
 
-    @Transient
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     private List<Episodio>episodios;
 
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e->e.setSerie(this));  //le damos el valor de la serie actual , para que agregue el id y mejore esa relación
+        this.episodios = episodios;
+    }
 
     public Serie (DatosSerie datosSerie){
         this.titulo=datosSerie.titulo();
@@ -57,7 +65,8 @@ public class Serie {
                 ", evaluacion='" + evaluacion + '\'' +
                 ", poster='" + poster + '\'' +
                 ", actores='" + actores + '\'' +
-                ", sinopsis='" + sinopsis + '\'';
+                ", sinopsis='" + sinopsis + '\''+
+                ", episodios=' "+episodios ;
                 
     }
 
